@@ -1,0 +1,80 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<header>
+			<nav>
+				<a href="/">Home</a>
+				<a href="/llm">LLM</a>
+				<a href="/image-generation">画像生成</a>
+				<a href="/efficiency">業務効率化</a>
+			</nav>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<footer>
+			<p>© 2025 AI情報まとめサイト</p>
+		</footer>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: 136, 58, 234;
+		--accent-light: 224, 204, 250;
+		--accent-dark: 49, 10, 101;
+		--accent-gradient: linear-gradient(
+			45deg,
+			rgb(var(--accent)),
+			rgb(var(--accent-light)) 30%,
+			white 60%
+		);
+	}
+	html {
+		font-family: 'Noto Sans JP', sans-serif;
+		background: #ffffff;
+		color: #222;
+	}
+
+	body {
+		margin: 0;
+		padding: 0 2rem;
+		max-width: 800px;
+		margin: auto;
+	}
+
+	header {
+		padding: 2rem 0;
+	}
+
+	nav a {
+		margin-right: 1rem;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		html {
+			background: #111;
+			color: #eee;
+		}
+	}
+</style>
