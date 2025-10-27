@@ -21,6 +21,7 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<header>
+			<a href={import.meta.env.BASE_URL} class="site-title">AI情報まとめサイト</a>
 			<nav>
 				<a href={import.meta.env.BASE_URL}>ホーム</a>
 				<a href={`${import.meta.env.BASE_URL}/llm`}>LLM</a>
@@ -38,43 +39,86 @@ const { title } = Astro.props;
 </html>
 <style is:global>
 	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
+		--background-light: #F0F4F8;
+		--background-dark: #1A202C;
+		--text-light: #2D3748;
+		--text-dark: #E2E8F0;
+		--primary-blue: #336699;
+		--accent-blue: #0099FF;
+		--border-color-light: #CBD5E0;
+		--border-color-dark: #4A5568;
 	}
 	html {
 		font-family: 'Noto Sans JP', sans-serif;
-		background: #ffffff;
-		color: #222;
+		background: var(--background-light);
+		color: var(--text-light);
 	}
 
 	body {
-		margin: 0;
+		margin: 0 auto;
 		padding: 0 2rem;
-		max-width: 800px;
-		margin: auto;
+		max-width: 960px;
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
 	}
 
 	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		padding: 2rem 0;
+		border-bottom: 1px solid var(--border-color-light);
+	}
+
+	header .site-title {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--primary-blue);
+		text-decoration: none;
+	}
+
+	nav {
+		display: flex;
+		gap: 1.5rem;
 	}
 
 	nav a {
-		margin-right: 1rem;
 		text-decoration: none;
-		color: inherit;
+		color: var(--text-light);
+		font-weight: 500;
+		transition: color 0.2s ease;
+	}
+
+	nav a:hover {
+		color: var(--accent-blue);
+	}
+
+	main {
+		flex-grow: 1;
+		padding: 2rem 0;
+	}
+
+	footer {
+		padding: 2rem 0;
+		text-align: center;
+		border-top: 1px solid var(--border-color-light);
+		color: #718096;
 	}
 
 	@media (prefers-color-scheme: dark) {
 		html {
-			background: #111;
-			color: #eee;
+			background: var(--background-dark);
+			color: var(--text-dark);
+		}
+		header, footer {
+			border-color: var(--border-color-dark);
+		}
+		nav a {
+			color: var(--text-dark);
+		}
+		header .site-title {
+			color: var(--accent-blue);
 		}
 	}
 </style>

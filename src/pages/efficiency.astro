@@ -1,15 +1,61 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const efficiencyNews = [
+  { name: 'Notion AI', description: 'ドキュメント作成、タスク管理、情報整理などをAIがサポート。ワークスペース内の情報を横断的に活用し、作業を効率化します。', url: 'https://www.notion.so/product/ai' },
+  { name: 'Microsoft Copilot', description: 'Microsoft 365アプリに統合されたAIアシスタント。ドキュメントの要約、メールの下書き、データ分析など、日常的な業務を自動化します。', url: 'https://copilot.microsoft.com/' },
+  { name: 'AI Writer', description: 'SAKUBUNを運営する株式会社NOVELが提供するAIライティングツール。ブログ記事、広告文、SNS投稿など、様々な文章を高品質に自動生成します。', url: 'https://ai-writer.jp/' },
+  { name: 'DeepL', description: '高精度な機械翻訳サービス。AIを活用し、自然でニュアンスを捉えた翻訳を実現。多言語コミュニケーションを円滑にします。', url: 'https://www.deepl.com/translator' },
+];
 ---
 
 <Layout title="業務効率化AI情報">
-  <h1>業務効率化AI情報</h1>
-  <p>Google NotebookLMなどの業務効率化AIに関する最新情報をまとめています。</p>
+  <h1>業務効率化</h1>
+  <p>文章作成、情報収集、タスク管理など、日々の業務を効率化するためのAIツールを紹介します。</p>
 
-  <h2>直近のニュース</h2>
-  <ul>
-    <li>OpenAI、ChatGPTに社内ツールに分散する情報を横断検索する「company knowledge」を発表。(2025/10/27)</li>
-    <li>北九州市とTOPPAN、BPRおよびDX推進に関する連携を締結。約421万時間のノンコア業務を削減へ。(2025/10/22)</li>
-    <li>PFU、AI-OCRソフトウェア「DynaEye 給与支払報告書OCR」に新機能を実装し、帳票処理業務を効率化。(2025/10/21)</li>
-  </ul>
+  <div class="news-grid">
+    {efficiencyNews.map(item => (
+      <div class="news-card">
+        <h3>{item.name}</h3>
+        <p>{item.description}</p>
+        <a href={item.url} target="_blank" rel="noopener noreferrer">公式サイトへ</a>
+      </div>
+    ))}
+  </div>
 </Layout>
+
+<style>
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .news-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color-light);
+  }
+  .news-card h3 {
+    margin-top: 0;
+  }
+  .news-card a {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .news-card a:hover {
+    color: var(--accent-blue);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .news-card {
+      background: #2D3748;
+      border-color: var(--border-color-dark);
+    }
+  }
+</style>

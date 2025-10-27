@@ -1,15 +1,61 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const llmNews = [
+  { name: 'ChatGPT', description: 'OpenAIが開発した対話型AI。最新モデルGPT-4oはマルチモーダル対応で、テキスト、音声、画像をリアルタイムで高速に処理できます。無料プランでも高機能を利用できます。', url: 'https://openai.com/chatgpt' },
+  { name: 'Claude 3', description: 'Anthropic社が開発したAIモデル。特に自然な文章生成に優れており、一度に約20万文字までの長文情報を処理できる点が特徴です。', url: 'https://www.anthropic.com/claude' },
+  { name: 'Gemini', description: 'Googleが開発したマルチモーダルAI。Copilotにも搭載されており、テキスト生成、翻訳、コーディング支援など幅広いタスクに対応します。', url: 'https://gemini.google.com/' },
+  { name: 'Perplexity', description: '対話型のAI検索エンジン。情報源を明記した上で、自然な文章で回答を生成するため、情報収集の効率を大幅に向上させます。', url: 'https://www.perplexity.ai/' },
+];
 ---
 
 <Layout title="LLM情報">
-  <h1>LLM情報</h1>
-  <p>ChatGPTなどのLLMに関する最新情報をまとめています。</p>
+  <h1>LLM（大規模言語モデル）</h1>
+  <p>テキスト生成、要約、翻訳、アイデア出しなど、様々なタスクで活用できる代表的なLLM関連ツールを紹介します。</p>
 
-  <h2>直近のニュース</h2>
-  <ul>
-    <li>NTT、高性能・高セキュア・低コストを実現した純国産LLM「tsuzumi 2」の提供を開始。(2025/10/24)</li>
-    <li>OpenAI、ChatGPTが組み込まれたWebブラウザ「ChatGPT Atlas」の提供を開始。(2025/10/23)</li>
-    <li>Googleの最新AI「Gemini」のできることや、その活用事例を解説する記事が公開されました。(2025/10/27)</li>
-  </ul>
+  <div class="news-grid">
+    {llmNews.map(item => (
+      <div class="news-card">
+        <h3>{item.name}</h3>
+        <p>{item.description}</p>
+        <a href={item.url} target="_blank" rel="noopener noreferrer">公式サイトへ</a>
+      </div>
+    ))}
+  </div>
 </Layout>
+
+<style>
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .news-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color-light);
+  }
+  .news-card h3 {
+    margin-top: 0;
+  }
+  .news-card a {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .news-card a:hover {
+    color: var(--accent-blue);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .news-card {
+      background: #2D3748;
+      border-color: var(--border-color-dark);
+    }
+  }
+</style>
