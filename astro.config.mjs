@@ -4,5 +4,5 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://kozuemitarai.github.io',
-  base: '/app',
+  base: '/julesTest',
 });
