@@ -1,15 +1,61 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const imageGenerationNews = [
+  { name: 'Adobe Firefly', description: 'Adobeが開発した画像生成AI。Adobe製品との連携が強力で、生成した画像は商用利用が可能です。', url: 'https://www.adobe.com/products/firefly.html' },
+  { name: 'Midjourney', description: '高品質で芸術的な画像を生成できることで人気のAIサービス。Discord上でテキストプロンプトを入力して画像を生成します。', url: 'https://www.midjourney.com/' },
+  { name: 'Canva', description: 'デザインツールCanvaに搭載されている画像生成機能。テキストから手軽に画像を生成し、そのままデザインに活用できます。', url: 'https://www.canva.com/features/ai-image-generator/' },
+  { name: 'DALL-E 3', description: 'OpenAIが開発した画像生成モデル。ChatGPTに統合されており、対話形式で直感的に画像を生成・編集できます。', url: 'https://openai.com/dall-e-3' },
+];
 ---
 
 <Layout title="画像生成AI情報">
-  <h1>画像生成AI情報</h1>
-  <p>Midjourneyなどの画像生成AIに関する最新情報をまとめています。</p>
+  <h1>画像生成</h1>
+  <p>テキストから高品質な画像を生成できるAIツールを紹介します。デザイン、イラスト、アイデア出しなど、クリエイティブな作業で役立ちます。</p>
 
-  <h2>直近のニュース</h2>
-  <ul>
-    <li>コクヨ、画像生成AIを活用し空間設計業務を支援する「オフィススタイルAI」の社内運用を開始。(11月より)</li>
-    <li>パナソニックHD、AIが自らの生成結果を振り返って改善する画像生成技術「Reflect-Dit」を開発。(2025/10/17)</li>
-    <li>グラムス、EC販促を支援する動画・画像生成AIアプリ「heroshot」の提供を開始。(2025/10/20)</li>
-  </ul>
+  <div class="news-grid">
+    {imageGenerationNews.map(item => (
+      <div class="news-card">
+        <h3>{item.name}</h3>
+        <p>{item.description}</p>
+        <a href={item.url} target="_blank" rel="noopener noreferrer">公式サイトへ</a>
+      </div>
+    ))}
+  </div>
 </Layout>
+
+<style>
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .news-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color-light);
+  }
+  .news-card h3 {
+    margin-top: 0;
+  }
+  .news-card a {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .news-card a:hover {
+    color: var(--accent-blue);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .news-card {
+      background: #2D3748;
+      border-color: var(--border-color-dark);
+    }
+  }
+</style>
