@@ -12,7 +12,7 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,10 +22,10 @@ const { title } = Astro.props;
 	<body>
 		<header>
 			<nav>
-				<a href="/">ホーム</a>
-				<a href="/llm">LLM</a>
-				<a href="/image-generation">画像生成</a>
-				<a href="/efficiency">業務効率化</a>
+				<a href={import.meta.env.BASE_URL}>ホーム</a>
+				<a href={`${import.meta.env.BASE_URL}/llm`}>LLM</a>
+				<a href={`${import.meta.env.BASE_URL}/image-generation`}>画像生成</a>
+				<a href={`${import.meta.env.BASE_URL}/efficiency`}>業務効率化</a>
 			</nav>
 		</header>
 		<main>
