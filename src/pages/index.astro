@@ -1,20 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import NewsCard from '../components/NewsCard.astro';
+import { news } from '../data/news';
 
-const newsByCategory = {
-  llm: [
-    { name: 'ChatGPT', description: '最新モデルGPT-4oが登場し、マルチモーダル対応でリアルタイム処理が高速化。無料プランでも利用可能。', url: 'https://openai.com/chatgpt' },
-    { name: 'Claude 3', description: '自然な文章生成に定評があり、一度に約20万文字の長文処理が可能。', url: 'https://www.anthropic.com/claude' },
-  ],
-  imageGeneration: [
-    { name: 'Adobe Firefly', description: 'Adobe製品との連携が強力。商用利用可能な画像を生成。', url: 'https://www.adobe.com/products/firefly.html' },
-    { name: 'Midjourney', description: '高品質で芸術的な画像生成が得意。', url: 'https://www.midjourney.com/' },
-  ],
-  efficiency: [
-    { name: 'Notion AI', description: 'ドキュメント作成、タスク管理、情報整理などをAIがサポート。', url: 'https://www.notion.so/product/ai' },
-    { name: 'Perplexity', description: '対話型の検索エンジンで、情報収集を効率化。', url: 'https://www.perplexity.ai/' },
-  ],
-};
+const featuredNews = news.filter(item => item.category === 'Featured');
 ---
 
 <Layout title="AI情報まとめサイト">
@@ -22,43 +11,14 @@ const newsByCategory = {
     <h1>最新AIツール情報</h1>
     <p>このサイトでは、LLM、画像生成、業務効率化に役立つ最新のAIツール情報をまとめています。個人の利用に適したものを中心に紹介します。</p>
     <p>これはGeminiCLIからの変更指示のテストです。</p>
+
   </section>
 
   <section class="category-section">
-    <h2>LLM（大規模言語モデル）</h2>
+    <h2>注目のニュース</h2>
     <div class="news-grid">
-      {newsByCategory.llm.map(item => (
-        <div class="news-card">
-          <h3>{item.name}</h3>
-          <p>{item.description}</p>
-          <a href={item.url} target="_blank" rel="noopener noreferrer">公式サイトへ</a>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section class="category-section">
-    <h2>画像生成</h2>
-    <div class="news-grid">
-      {newsByCategory.imageGeneration.map(item => (
-        <div class="news-card">
-          <h3>{item.name}</h3>
-          <p>{item.description}</p>
-          <a href={item.url} target="_blank" rel="noopener noreferrer">公式サイトへ</a>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section class="category-section">
-    <h2>業務効率化</h2>
-    <div class="news-grid">
-      {newsByCategory.efficiency.map(item => (
-        <div class="news-card">
-          <h3>{item.name}</h3>
-          <p>{item.description}</p>
-          <a href={item.url} target="_blank" rel="noopener noreferrer">公式サイトへ</a>
-        </div>
+      {featuredNews.map(article => (
+        <NewsCard article={article} />
       ))}
     </div>
   </section>
@@ -67,41 +27,17 @@ const newsByCategory = {
 <style>
   .hero {
     text-align: center;
-    padding: 2rem 0;
+    padding: 2rem 0 3rem;
   }
-  .category-section {
-    margin-bottom: 3rem;
+  .category-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-blue);
   }
   .news-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    gap: 2rem;
   }
-  .news-card {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-		border: 1px solid var(--border-color-light);
-  }
-	.news-card h3 {
-		margin-top: 0;
-	}
-  .news-card a {
-    display: inline-block;
-    margin-top: 1rem;
-    color: var(--primary-blue);
-    text-decoration: none;
-    font-weight: bold;
-  }
-	.news-card a:hover {
-		color: var(--accent-blue);
-	}
-
-	@media (prefers-color-scheme: dark) {
-		.news-card {
-			background: #2D3748;
-			border-color: var(--border-color-dark);
-		}
-	}
 </style>

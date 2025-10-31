@@ -1,0 +1,78 @@
+---
+import type { NewsArticle } from '../data/news';
+
+interface Props {
+  article: NewsArticle;
+}
+
+const { article } = Astro.props;
+// BASE_URLをサムネイルパスの先頭に追加して、サブディレクトリでのデプロイに対応
+const thumbnailUrl = `${import.meta.env.BASE_URL}${article.thumbnail.startsWith('/') ? article.thumbnail : '/' + article.thumbnail}`;
+---
+
+<a href={article.url} target="_blank" rel="noopener noreferrer" class="card">
+  <img src={thumbnailUrl} alt={article.title} class="thumbnail" loading="lazy" />
+  <div class="content">
+    <h3 class="title">{article.title}</h3>
+    <p class="summary">{article.summary}</p>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: block;
+    background: var(--background-light);
+    border: 1px solid var(--border-color-light);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    height: 100%;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  }
+
+  .thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--border-color-light);
+  }
+
+  .content {
+    padding: 1.25rem;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: var(--primary-blue);
+  }
+
+  .summary {
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .card {
+      background: #2D3748;
+      border-color: var(--border-color-dark);
+      color: var(--text-dark);
+    }
+    .thumbnail {
+      border-color: var(--border-color-dark);
+    }
+    .title {
+        color: var(--accent-blue);
+    }
+  }
+</style>
