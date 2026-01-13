@@ -1,0 +1,45 @@
+name: Generate AI Report
+
+on:
+  schedule:
+    # 毎日 日本時間 朝9:00に実行 (UTC 0:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 手動実行ボタンも有効化
+
+permissions:
+  contents: write # リポジトリへの書き込み権限を付与
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run AI Report Generator
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: python generate_report.py
+
+      - name: Commit and Push Report
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          # 変更がある場合のみコミットする
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Add AI report for $(date +'%Y-%m-%d')"
+            git push
+          fi
