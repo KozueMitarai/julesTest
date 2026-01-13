@@ -1,0 +1,44 @@
+name: Generate AI Report (Gemini 3)
+
+on:
+  schedule:
+    # 毎日 日本時間 午前9:00に実行 (UTC 0:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # GitHub上で手動実行するためのボタンを表示
+
+permissions:
+  contents: write # リポジトリへの書き込み権限を許可
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Pythonをセットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: ライブラリのインストール
+        run: |
+          pip install -r requirements.txt
+
+      - name: レポート生成実行
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: python generate_report.py
+
+      - name: 生成されたファイルを保存（Commit & Push）
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          if git diff --staged --quiet; then
+            echo "変更がないためスキップします"
+          else
+            git commit -m "Add AI report for $(date +'%Y-%m-%d')"
+            git push
+          fi
