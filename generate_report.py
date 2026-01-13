@@ -1,51 +1,83 @@
 import os
 import google.generativeai as genai
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# APIキーの設定
+# 1. APIキーの設定
 api_key = os.environ.get("GOOGLE_API_KEY")
 if not api_key:
-    raise ValueError("GOOGLE_API_KEY is not set")
+    raise ValueError("GOOGLE_API_KEYが設定されていません。GitHubのSecretsを確認してください。")
 
 genai.configure(api_key=api_key)
 
-# モデルの設定 (Gemini 1.5 Flashを使用)
-# ※将来的に新しいモデルが出た場合は model_name を変更してください
-model = genai.GenerativeModel('gemini-3-flash-preview')
+# 2. モデルの設定 (最新のGemini 3 Flash Preview + Google検索ツール)
+model = genai.GenerativeModel(
+    model_name='gemini-3-flash-preview',
+    tools=[{'google_search': {}}] 
+)
 
-# 今日の日付
-today = datetime.now().strftime('%Y-%m-%d')
+# 3. 日付の計算（今日と7日前）
+today_dt = datetime.now()
+today = today_dt.strftime('%Y-%m-%d')
+one_week_ago = (today_dt - timedelta(days=7)).strftime('%Y-%m-%d')
 
-# プロンプト（指示書）の作成
+# 4. プロンプトの作成
 prompt = f"""
-あなたはIT専門のジャーナリストです。
-「非エンジニア」のビジネスパーソンや一般の方に向けて、
-今知っておくべき「最新のAI活用トレンド」や「便利なAIツール」について、
-分かりやすく解説する記事を書いてください。
+あなたは最新テクノロジーに精通した親しみやすいITライターです。
+Google検索を使用して、以下の条件でレポートを作成してください。
 
-【条件】
-- 専門用語は極力使わず、使う場合は噛み砕いて説明すること。
-- 今日の日付: {today}
-- 文字数は2000文字程度。
-- 読んだ人が「明日から使ってみよう」と思えるような具体的な活用例を入れること。
-- 出力はMarkdown形式で、見出しや箇条書きを使って読みやすくすること。
-- タイトルは「【{today}版】非エンジニアのための最新AI活用ニュース」とすること。
+【検索の制約】
+- 期間: {one_week_ago} から {today} まで（直近1週間以内）の情報に限定してください。
+- 検索時は必ず `after:{one_week_ago}` 演算子を活用し、古い情報を除外してください。
+
+【ターゲット】
+- AIに興味はあるが、専門用語には詳しくない一般のビジネスパーソン。
+
+【レポート構成】
+1. 今週の重要AIニュースTOP3（何が起きたのか？）
+2. 非エンジニアが注目すべきポイント（なぜ重要なのか？）
+3. 明日から仕事で使えるAI活用のヒント（具体的な活用法）
+
+【執筆スタイル】
+- 専門用語を避け、中学生でも理解できる言葉で解説してください。
+- 読者がワクワクするような、前向きで明るいトーンで執筆してください。
+- 出力はMarkdown形式。
+- タイトルは「【{today}版】AIを味方に！今週の最新活用トレンド」としてください。
 """
 
 try:
-    # コンテンツの生成
+    print(f"[{today}] レポート作成を開始します...")
+    
+    # コンテンツ生成
     response = model.generate_content(prompt)
     content = response.text
 
-    # ファイルへの保存 (output ディレクトリがない場合は作成)
-    os.makedirs("reports", exist_ok=True)
-    filename = f"reports/ai_report_{today}.md"
+    # 5. 引用元（ソース）情報の抽出
+    sources = []
+    if response.candidates and response.candidates[0].grounding_metadata:
+        metadata = response.candidates[0].grounding_metadata
+        if hasattr(metadata, 'grounding_chunks'):
+            for chunk in metadata.grounding_chunks:
+                if chunk.web:
+                    title = chunk.web.title if chunk.web.title else "参照記事"
+                    uri = chunk.web.uri
+                    sources.append(f"- [{title}]({uri})")
+
+    # 本文とソース一覧を結合
+    final_report = content
+    if sources:
+        unique_sources = "\n".join(list(dict.fromkeys(sources))) # 重複排除
+        final_report += f"\n\n---\n### 📊 この記事の参照元（直近1週間のニュース）\n{unique_sources}"
+
+    # 6. Markdownファイルとして保存
+    output_dir = "reports"
+    os.makedirs(output_dir, exist_ok=True)
+    filename = f"{output_dir}/ai_report_{today}.md"
     
     with open(filename, "w", encoding="utf-8") as f:
-        f.write(content)
+        f.write(final_report)
         
-    print(f"Success: Report generated at {filename}")
+    print(f"成功: {filename} を保存しました。")
 
 except Exception as e:
-    print(f"Error: {e}")
+    print(f"エラーが発生しました: {e}")
     exit(1)
