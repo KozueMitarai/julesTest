@@ -62,7 +62,9 @@ try:
         messages=[
             {"role": "system", "content": "あなたは親切で洞察力のあるIT専門ライターです。Markdown形式で出力してください。"},
             {"role": "user", "content": prompt}
-        ]
+        ],
+        # ↓ ここを追加（確保するトークン量を減らして、無料枠の範囲内に収めます）
+        max_tokens=2000 
     )
 
     report_body = response.choices[0].message.content
