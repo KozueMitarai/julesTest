@@ -44,7 +44,7 @@ try:
     
     # コンテンツ生成の実行
     response = client.models.generate_content(
-        model="gemini-3-flash",
+        model="gemini-3-flash-preview",
         contents=prompt,
         config=config,
     )
