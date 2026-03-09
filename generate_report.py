@@ -35,7 +35,7 @@ grounding_tool = types.Tool(
     google_search=types.GoogleSearch()
 )
 config = types.GenerateContentConfig(
-    //tools=[grounding_tool],
+    #tools=[grounding_tool],
     system_instruction="あなたは親切なIT専門ライターです。Markdown形式で出力してください。"
 )
 
