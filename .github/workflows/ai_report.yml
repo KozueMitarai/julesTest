@@ -2,7 +2,8 @@ name: Generate AI Report (OpenRouter & Tavily)
 
 on:
   schedule:
-    - cron: '23 0 * * *' # 日本時間 朝9時23分
+    # 毎週金曜日の UTC 0:23（日本時間 9:23）
+    - cron: '23 0 * * 5'
   workflow_dispatch: # 手動実行用ボタンを有効化
 
 permissions:
