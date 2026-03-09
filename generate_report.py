@@ -46,7 +46,7 @@ try:
     print(f"Gemini 3 Flash でレポートを執筆中...")
     # 検索機能(tools)を使わず、コンテキストとして情報を渡すので 503 エラーを回避しやすい
     response = client.models.generate_content(
-        model="gemini-3-flash",
+        model="gemini-3-flash-preview",
         contents=prompt,
         config={'system_instruction': "あなたは親切なIT専門ライターです。Markdown形式で出力してください。"}
     )
