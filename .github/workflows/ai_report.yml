@@ -1,9 +1,9 @@
-name: Generate AI Report (Gemini 3 & Tavily)
+name: Generate AI Report (OpenRouter & Tavily)
 
 on:
   schedule:
-    - cron: '17 0 * * *' # 日本時間 朝9時17分 (混雑回避のため少しずらしています)
-  workflow_dispatch: # 手動実行用
+    - cron: '23 0 * * *' # 日本時間 朝9時23分
+  workflow_dispatch: # 手動実行用ボタンを有効化
 
 permissions:
   contents: write
@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -22,12 +22,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
-          pip install tavily-python google-genai
+          pip install openai tavily-python
 
       - name: Run Generator
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
         run: python generate_report.py
 
