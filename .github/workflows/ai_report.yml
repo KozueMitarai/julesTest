@@ -1,8 +1,8 @@
-name: Generate AI Report (Gemini 3 Latest SDK)
+name: Generate AI Report (Gemini 3 & Tavily)
 
 on:
   schedule:
-    - cron: '0 0 * * *' # 日本時間 朝9時
+    - cron: '17 0 * * *' # 日本時間 朝9時17分 (混雑回避のため少しずらしています)
   workflow_dispatch: # 手動実行用
 
 permissions:
@@ -21,11 +21,14 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          pip install tavily-python google-genai
 
       - name: Run Generator
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
         run: python generate_report.py
 
       - name: Commit and Push
